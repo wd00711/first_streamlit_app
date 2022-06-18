@@ -31,3 +31,16 @@ streamlit.header("The Fruit List Contains:")
 streamlit.dataframe(my_data_rows)
 
 my_cur.execute("insert into fruit_load_list values ('from Streamlit')")
+
+streamlit.header('Fruitvice Fruit Advice')
+
+try:
+  fruit_choice=streamlit.text_input('what fruit would you like infromation about?')
+  if not fruit_choice:
+    streamlit.error("Please select a fruit to get information.")
+    else:
+      fruitvice_response=requests.get("https://fruityvice.com/api/fruit/" +fruit_choice)
+      fruitvice_normalized=pandas.json_normalize(fruityvice_response.json())
+      streamlit.dataframe(fruitvice_normalized)
+  except URLError as e:
+    streamlit.error()
